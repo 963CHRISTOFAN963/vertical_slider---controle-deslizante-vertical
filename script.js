@@ -1,40 +1,31 @@
-const body = document.body
-const slides = document.querySelectorAll('.slide')
-const leftBtn = document.getElementById('left')
-const rightBtn = document.getElementById('right')
+const sliderContainer = document.querySelector('.slider-container')
+const slideRight = document.querySelector('.right-slide')
+const slideLeft = document.querySelector('.left-slide')
+const upButton = document.querySelector('.up-button')
+const downButton = document.querySelector('.down-button')
+const slidesLength = slideRight.querySelectorAll('div').length
 
-let activeSlide = 0
+let activeSlideIndex = 0
 
-rightBtn.addEventListener('click', () => {
-    activeSlide++
+slideLeft.style.top = `-${(slidesLength - 1) * 100}vh`
 
-    if (activeSlide > slides.length - 1) {
-        activeSlide = 0
+upButton.addEventListener('click', () => changeSlide('up'))
+downButton.addEventListener('click', () => changeSlide('down'))
+
+const changeSlide = (direction) => {
+    const sliderHeight = sliderContainer.clientHeight
+    if (direction === 'up') {
+        activeSlideIndex++
+        if (activeSlideIndex > slidesLength - 1) {
+            activeSlideIndex = 0
+        }
+    } else if (direction === 'down') {
+        activeSlideIndex--
+        if (activeSlideIndex < 0) {
+            activeSlideIndex = slidesLength - 1
+        }
     }
 
-    setBgToBody()
-    setActiveSlide()
-})
-
-leftBtn.addEventListener('click', () => {
-    activeSlide--
-
-    if (activeSlide < 0) {
-        activeSlide = slides.length - 1
-    }
-
-    setBgToBody()
-    setActiveSlide()
-})
-
-setBgToBody()
-
-function setBgToBody() {
-    body.style.backgroundImage = slides[activeSlide].style.backgroundImage
-}
-
-function setActiveSlide() {
-    slides.forEach((slide) => slide.classList.remove('active'))
-
-    slides[activeSlide].classList.add('active')
+    slideRight.style.transform = `translateY(-${activeSlideIndex * sliderHeight}px)`
+    slideLeft.style.transform = `translateY(${activeSlideIndex * sliderHeight}px)`
 }
