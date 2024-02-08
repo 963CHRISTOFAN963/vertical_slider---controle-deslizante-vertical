@@ -1,0 +1,1 @@
+# vertical_slider---controle-deslizante-vertical
